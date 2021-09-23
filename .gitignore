@@ -1,0 +1,8 @@
+build
+.atom-build.yml
+.gradle
+bin
+.settings
+.project
+.classpath
+build.log

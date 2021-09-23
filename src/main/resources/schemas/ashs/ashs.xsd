@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.ahus.no/ashs" xmlns:ashs="http://www.ahus.no/ashs" xmlns:xdat="http://nrg.wustl.edu/xdat" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xnat="http://nrg.wustl.edu/xnat" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://nrg.wustl.edu/xnat" schemaLocation="../xnat/xnat.xsd"/>
+	<xs:element name="ASHS" type="ashs:ashsData"/>
+	<xs:complexType name="ashsData">
+		<xs:complexContent>
+			<xs:extension base="xnat:imageAssessorData">
+				<xs:sequence>
+					<xs:element name="ashs_version" type="xs:string"/>
+					<xs:element name="atlas" type="xs:string"/>
+					<xs:element name="ICV" type="xs:float" minOccurs="0"/>
+					<xs:element name="measures">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="volumetric_raw">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="regions" minOccurs="0">
+												<xs:complexType>
+													<xs:sequence minOccurs="0">
+														<xs:element name="region" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:appinfo>
+																	<xdat:element>
+																		<xdat:sqlElement name="ashsData_vol_raw_region"/>
+																	</xdat:element>
+																	<xdat:field>
+																		<xdat:relation uniqueComposite="name" relationType="single"/>
+																	</xdat:field>
+																</xs:appinfo>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:sequence minOccurs="0">
+																	<xs:element name="NSlices" type="xs:float" minOccurs="0"/>
+																	<xs:element name="Volume" type="xs:float" minOccurs="0"/>
+																</xs:sequence>
+																<xs:attribute name="name" type="xs:string" use="required">
+																	<xs:annotation>
+																		<xs:appinfo>
+																			<xdat:field uniqueComposite="name"/>
+																		</xs:appinfo>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="hemisphere">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:enumeration value="left"/>
+																			<xs:enumeration value="right"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="volumetric_heur">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="regions" minOccurs="0">
+												<xs:complexType>
+													<xs:sequence minOccurs="0">
+														<xs:element name="region" minOccurs="0" maxOccurs="unbounded">
+															<xs:annotation>
+																<xs:appinfo>
+																	<xdat:element>
+																		<xdat:sqlElement name="ashsData_vol_heur_region"/>
+																	</xdat:element>
+																	<xdat:field>
+																		<xdat:relation uniqueComposite="name" relationType="single"/>
+																	</xdat:field>
+																</xs:appinfo>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:sequence minOccurs="0">
+																	<xs:element name="NSlices" type="xs:float" minOccurs="0"/>
+																	<xs:element name="Volume" type="xs:float" minOccurs="0"/>
+																</xs:sequence>
+																<xs:attribute name="name" type="xs:string" use="required">
+																	<xs:annotation>
+																		<xs:appinfo>
+																			<xdat:field uniqueComposite="name"/>
+																		</xs:appinfo>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="hemisphere">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:enumeration value="left"/>
+																			<xs:enumeration value="right"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+$page.setTitle("ASHS Analysis Details")
+$page.setLinkColor($ui.alink)
+$page.setVlinkColor($ui.vlink)
+#if ($data.getParameters().getString("popup"))
+    #set ($popup = $data.getParameters().getString("popup") )
+    #set ($popup = "false")
+#end
+
+<script type="text/javascript" src="/scripts/FileViewer.js"></script>
+<script type="text/javascript" src="/scripts/BasePopup.js"></script>
+<script type="text/javascript" src="/scripts/restSharer.js"></script>
+
+<script type="text/javascript">
+    var obj=new Object();
+    obj.uri=serverRoot + "/REST/projects/$!om.getProject()/subjects/$!om.SubjectData.getLabel()/experiments/$!om.getId()";
+    obj.uri=serverRoot + "/REST/experiments/${om.getImageSessionData().getId()}/assessors/$!om.getId()";
+
+    #if($item.isActive() || $item.isQuarantine())
+        #if ($item.canEdit($data.getSession().getAttribute("user")))
+            obj.canEdit=true;
+        #else
+            obj.canEdit=false;
+        #end
+        #if ($item.canDelete($data.getSession().getAttribute("user")))
+            obj.canDelete=true;
+        #else
+            obj.canDelete=false;
+        #end
+    #else
+        obj.canEdit=false;
+        obj.canDelete=false;
+    #end
+
+    obj.catalogs=new Object();
+    obj.catalogs.ids=new Array();
+    window.viewer=new FileViewer(obj);
+
+    function showFiles(){
+        window.viewer.render();
+    }
+</script>
+<script>
+    jq(document).ready(function(){
+        function toggleLI(_name){
+            var elements = document.getElementsByName("li_"+_name);
+            for(var trI=0;trI<elements.length;trI++){
+                if(elements[trI].style.display=="none"){
+                    elements[trI].style.display="block";
+                }else{
+                    elements[trI].style.display="none";
+                }
+            }
+        }
+
+        // initialize tabs
+        function summaryIndexChanged(){
+            var activeIndex=this.get("activeIndex");
+            YAHOO.util.Cookie.set("${project.getId()}.summary.index",activeIndex);
+        }
+        function summaryTabManagerInit(){
+            window.summaryTabView = new YAHOO.widget.TabView('exptSummary');
+
+            window.expt_summary_module = new YAHOO.widget.Module("expt_summary_module",{visible:false,zIndex:5});
+
+            window.expt_summary_module.show();
+
+            var tabIndex=YAHOO.util.Cookie.get("${om.getId()}.summary.index");
+            window.summaryTabView.set('activeIndex',tabIndex||0);
+
+            window.summaryTabView.subscribe("activeTabChange",summaryIndexChanged);
+        }
+        summaryTabManagerInit();
+
+        function analysisIndexChanged(){
+            var activeIndex=this.get("activeIndex");
+            YAHOO.util.Cookie.set("${project.getId()}.analysis.index",activeIndex);
+        }
+        function analysisTabManagerInit(){
+            window.analysisTabView = new YAHOO.widget.TabView('analysisTabs');
+
+            window.analysis_tab_module = new YAHOO.widget.Module("analysis_tab_module",{visible:false,zIndex:5});
+
+            window.analysis_tab_module.show();
+
+            var tabIndex=YAHOO.util.Cookie.get("${om.getId()}.analysis.index");
+            window.analysisTabView.set('activeIndex',tabIndex||0);
+
+            window.analysisTabView.subscribe("activeTabChange",analysisIndexChanged);
+        }
+        analysisTabManagerInit();
+    });
+</script>
+
+
+#addCustomScreens($om.getXSIType() "report/alert")
+#parse("/screens/workflow_alert.vm")
+
+<h2>ASHS Report:</h2>
+<table>
+    <tr valign="top">
+        <td name="headerTabset" width="75%">
+            <div id="exptSummary" class="yui-navset" style="margin-right: 80px;">
+                <ul class="yui-nav" style="">
+                    <li class="selected"><a href="#tab1"><em>Details</em></a></li>
+                    <li><a href="#tab2"><em>Project Sharing</em></a></li>
+                </ul>
+                <div class="yui-content">
+                    <div id="tab1">
+                        <table class="xnat-table">
+                            #set ($id=".ID")
+                            #set ($field="$om.getImageSessionData().getXSIType()$id")
+
+                            #set ($url = "$link.setAction('DisplayItemAction').addPathInfo('search_element',$om.getImageSessionData().getXSIType()).addPathInfo('search_field',$field).addPathInfo('search_value',$om.getImageSessionData().getId()).addPathInfo('project',$om.getProject())")
+
+                            <TR><TD>MRSession</TD><TD><a href="$url">$om.getImageSessionData().getLabel()</a></TD></TR>
+                            <TR><TD>Date</TD><TD>$!om.date</TD></TR>
+                            #if ($!item.getStringProperty("ashs:ashsData/note")!="")
+                                <TR><TD>Note</TD><TD>$!item.getStringProperty("ashs:ashsData/note")</TD></TR>
+                            #end
+                            <TR><TD>ID</TD><TD>$!om.label</TD></TR>
+                            <TR><TD>Project</TD><TD>$!om.project</TD></TR>
+                            <TR><TD>ASHS version</TD><TD>$!item.getStringProperty("ashs:ashsData/ashs_version")</TD></TR>
+                            <TR><TD>ASHS atlas</TD><TD>$!item.getStringProperty("ashs:ashsData/atlas")</TD></TR>
+                        </table>
+                    </div>
+                    <div id="tab2">
+                        #parse($turbineUtils.getTemplateName("sharing",$om.getXSIType(),$!project))
+                    </div>
+                </div>
+            </div>
+
+        </td>
+        <td name="headerActions" width="25%" valign="top">
+            #parse($turbineUtils.getTemplateName("actions",$om.getXSIType(),$project))
+        </td>
+    </tr>
+</table>
+
+<h2>ASHS Analysis</h2>
+
+
+
+<div id="analysisTabs" class="yui-navset">
+    <ul class="yui-nav" style="">
+        <li class="selected"><a href="#analysis1"><em>Volume raw</em></a></li>
+        <li><a href="#analysis2"><em>Volume heur</em></a></li>
+    </ul>
+
+    <div class="" id="ICV">
+      <table>
+        <TD>ICV</TD><TD>$!turbineUtils.formatNumber($!item.getDoubleProperty("ashs:ashsData/measures/icv"),0)</TD>
+      </table>
+    </div>
+
+    #macro (volumeTab $tabID $volumeString)
+      <div id="$tabID">
+          <!-- BEGIN $volumeString MEASURES -->
+          #set($ashs_region_NUM_ROWS=$item.getChildItems("ashs:ashsData/measures/$volumeString/regions/region").size() - 1)
+          #if($ashs_region_NUM_ROWS>=0)
+              <table class="xnat-table">
+
+                  <tr><TH>Region Name</TH><TH>N Slices</TH><TH>Hemisphere</TH><TH>Volume (mm<sup>3</sup>)</tr>
+
+                  #foreach($ashs_region_COUNTER in [0..$ashs_region_NUM_ROWS])
+                      <!-- BEGIN ashs_ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER] -->
+                      <tr>
+                          <TD>$!item.getStringProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/name")</TD>
+                          <TD>$!item.getStringProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/NSlices")</TD>
+                          <TD>$!item.getStringProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/hemisphere")</TD>
+                          <TD>$!turbineUtils.formatNumber($!item.getDoubleProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/Volume"),0)</TD>
+                      </tr>
+
+                      <!-- END ashs_ashsData/measures/volumetric/regions/region[$ashs_region_COUNTER] -->
+                  #end
+              </table>
+          #end
+          <!-- END ashs_ashsData VOLUMETRIC MEASURES-->
+      </div>
+    #end
+
+    <div class="yui-content">
+        #volumeTab("analysis1" "volumetric_raw")
+        #volumeTab("analysis2" "volumetric_heur")
+    <!-- END YUI CONTENT -->
+    </div>
+<!-- END YUI NAVSET -->
+</div>
