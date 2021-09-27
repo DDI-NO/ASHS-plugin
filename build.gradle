@@ -44,7 +44,7 @@ repositories {
 //       versions for all of XNAT's dependencies. This helps ensure that plugins are building
 //       against the same versions of various libraries as XNAT itself.
 dependencyManagement.imports {
-    mavenBom "org.nrg:parent:${project.version}"
+    mavenBom "org.nrg:parent:${vXnat}"
 }
 
 // TODO: This is a pretty minimal set of dependencies, so don't worry if you need to add more.
