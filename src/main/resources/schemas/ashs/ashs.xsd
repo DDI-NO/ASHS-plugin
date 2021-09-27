@@ -8,6 +8,7 @@
 				<xs:sequence>
 					<xs:element name="ashs_version" type="xs:string"/>
 					<xs:element name="atlas" type="xs:string"/>
+
 					<xs:element name="ICV" type="xs:float" minOccurs="0"/>
 					<xs:element name="measures">
 						<xs:complexType>
@@ -104,6 +105,7 @@
 								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
+						</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

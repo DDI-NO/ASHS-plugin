@@ -1,0 +1,1077 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Displays xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xdat/display.xsd" schema-element="ashs:ashsData" full-description="ASHS" brief-description="ASHS">
+	<Arc name="ASSESSOR">
+        <CommonField id="EXPT_ID" local-field="EXPT_ID"/>
+        <CommonField id="ASSESSED_EXPT_ID" local-field="SESSION_ID"/>
+   </Arc>
+   <Arc name="PARTICIPANT_EXPERIMENT">
+		<CommonField id="PART_ID" local-field="SUBJECT_ID"/>
+		<CommonField id="DATE" local-field="MR_DATE"/>
+		<CommonField id="EXPT_ID" local-field="EXPT_ID"/>
+	</Arc>
+	<DisplayField id="SESSION_ID" header="Session" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.imageSession_ID"/>
+	</DisplayField>
+	<DisplayField id="SUBJECT_ID" header="Subject" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="xnat:imageSessionData.subject_ID"/>
+		<HTML-Link>
+			<Property name="HREF" value="none"/>
+			<Property name="ONCLICK" value="return rpt('@Field1','xnat:subjectData','xnat:subjectData.ID');">
+				<InsertValue id="Field1" field="SUBJECT_ID"/>
+			</Property>
+		</HTML-Link>
+	</DisplayField>
+	<DisplayField id="MR_DATE" header="Image Date" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="xnat:imageSessionData.date"/>
+	</DisplayField>
+	<DisplayField id="EXPT_ID" header="ID" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.ID"/>
+		<HTML-Link>
+			<Property name="HREF" value="none"/>
+			<Property name="ONCLICK" value="return rpt('@Field1','ashs:ashsData','ashs:ashsData.ID');">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+		</HTML-Link>
+	</DisplayField>
+
+	<DisplayField id="RPT" header="ID" visible="true" image="true">
+		<Content type="sql">'/@WEBAPP/images/r.gif'::text</Content>
+		<HTML-Link>
+			<Property name="HREF" value="none"/>
+			<Property name="ONCLICK" value="return rpt('@Field1','ashs:ashsData','ashs:ashsData.ID');">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+		</HTML-Link>
+	</DisplayField>
+	<DisplayField id="DATE" header="ASHS Date" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.date"/>
+	</DisplayField>
+	<DisplayField id="NOTE" header="ASHS Notes" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.note"/>
+	</DisplayField>
+	<DisplayField header="Projects" id="PROJECTS" data-type="string">
+		<DisplayFieldElement name="Field1" viewName="ASHS_ASHSDATA_PROJECTS" viewColumn="PROJECTS"/>
+	</DisplayField>
+	<DisplayField header="Label" id="LABEL" data-type="string">
+	<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.ID"/>
+	<DisplayFieldElement name="Field2" schema-element="ashs:ashsData.label"/>
+	<Content type="sql">COALESCE(@Field2, @Field1)</Content>
+		<HTML-Link>
+			<SecureLink elementName="ashs:ashsData">
+				<securityMappingValue displayFieldId="PROJECTS" schemaElementMap="ashs:ashsData/sharing/share/project"/>
+				<securityMappingValue displayFieldId="PROJECT" schemaElementMap="ashs:ashsData/project"/>
+			</SecureLink>
+			<Property name="HREF" value="@WEBAPPapp/action/DisplayItemAction/search_value/@Field1/search_element/ashs:ashsData/search_field/ashs:ashsData.ID">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+			<Property name="ONCLICK" value="return rpt('@Field1','ashs:ashsData','ashs:ashsData.ID');">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+			<Property name="TITLE" value="Inserted: @Field1 (@Field2)">
+				<InsertValue id="Field1" field="INSERT_DATE"/>
+				<InsertValue id="Field2" field="INSERT_USER"/>
+			</Property>
+		</HTML-Link>
+	</DisplayField>
+	<DisplayField id="PROJECT" header="Project" visible="true" searchable="true" data-type="string">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.project"/>
+	</DisplayField>
+	<DisplayField id="ASHS_ASHSDATA_PROJECT_IDENTIFIER" header="ASHS_ASHSDATA ID" visible="true" searchable="false" data-type="string" xsi:type="SubQueryField">
+		<Content type="sql">ashsdata_project_id</Content>
+		<HTML-Link>
+			<SecureLink elementName="ashs:ashsData">
+				<securityMappingValue displayFieldId="PROJECTS" schemaElementMap="ashs:ashsData/sharing/share/project"/>
+				<securityMappingValue displayFieldId="PROJECT" schemaElementMap="ashs:ashsData/project"/>
+			</SecureLink>
+			<Property name="HREF" value="@WEBAPPapp/action/DisplayItemAction/search_value/@Field1/search_element/ashs:ashsData/search_field/ashs:ashsData.ID/project/@Field2">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+				<InsertValue id="Field2" field="@WHERE"/>
+			</Property>
+		</HTML-Link>
+		<SubQuery>SELECT DISTINCT COALESCE(label,sharing_share_xnat_experimentda_id) AS ashsdata_project_id,sharing_share_xnat_experimentda_id FROM (	SELECT sharing_share_xnat_experimentda_id,label FROM xnat_experimentdata_share WHERE project='@WHERE'	UNION 	SELECT id,label FROM xnat_experimentData WHERE project='@WHERE' )SEARCH</SubQuery>
+		<MappingColumns>
+			<MappingColumn schemaField="ashs:ashsData.ID" queryField="sharing_share_xnat_experimentda_id"/>
+		</MappingColumns>
+	</DisplayField>
+	<DisplayField id="INSERT_DATE" header="Inserted" visible="true" searchable="true" data-type="string">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.meta.insert_date"/>
+	</DisplayField>
+	<DisplayField id="INSERT_USER" header="Creator" visible="true" searchable="true" data-type="string">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.meta.insert_user.login"/>
+	</DisplayField>
+
+	<DisplayField id="ASHS_ASHSDATA_FIELD_MAP" header="Field" visible="true" searchable="false" data-type="string" xsi:type="SubQueryField">
+		<Content type="sql">field</Content>
+		<SubQuery>SELECT DISTINCT ON ( e.ID) e.ID AS expt_id,field FROM xnat_experimentData_field ef JOIN (SELECT ID,extension,element_name FROM xnat_experimentData e JOIN xdat_meta_element xme ON e.extension=xme.xdat_meta_element_id WHERE xme.element_name='ashs:ashsData') e on ef.fields_field_xnat_experimentdat_id=e.id WHERE name='@WHERE'</SubQuery>
+		<MappingColumns>
+			<MappingColumn schemaField="ashs:ashsData.ID" queryField="expt_id"/>
+		</MappingColumns>
+	</DisplayField>
+	<DisplayField id="VERSION" header="version" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/ashs_version"/>
+	</DisplayField>
+		<DisplayField id="ATLAS" header="atlas" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/atlas"/>
+	</DisplayField>
+	<!-- <DisplayField id="INCLUDED_T1" header="Included_T1" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/included_T1"/>
+	</DisplayField>
+	<DisplayField id="INCLUDED_T2" header="Included_T2" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/included_T2"/>
+	</DisplayField> -->
+	<DisplayField id="MEASURES_VOLUMETRIC_ICV" header="IntraCranialVol" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/ICV"/>
+	</DisplayField>
+
+<!-- Beginning of volumetric raw variables -->
+<!-- Left Hemisphere -->
+	<DisplayField id="_LEFTRAWANTERIORHIPPOCAMPUS_NSLICES" header="Left-Raw-Anterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWANTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWANTERIORHIPPOCAMPUS" header="Left-Raw-Anterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWANTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWANTERIORHIPPOCAMPUS_HEMI" header="Left-Raw-Anterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWANTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWPOSTERIORHIPPOCAMPUS_NSLICES" header="Left-Raw-Posterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWPOSTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWPOSTERIORHIPPOCAMPUS" header="Left-Raw-Posterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWPOSTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWPOSTERIORHIPPOCAMPUS_HEMI" header="Left-Raw-Posterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWPOSTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWMISC_NSLICES" header="Left-Raw-Misc_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMISC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWMISC" header="Left-Raw-Misc_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMISC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWMISC_HEMI" header="Left-Raw-Misc HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMISC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWMENINGESPHC_NSLICES" header="Left-Raw-Meninges-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMENINGESPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWMENINGESPHC" header="Left-Raw-Meninges-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMENINGESPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWMENINGESPHC_HEMI" header="Left-Raw-Meninges-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMENINGESPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWERC_NSLICES" header="Left-Raw-ERC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWERC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWERC" header="Left-Raw-ERC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWERC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWERC_HEMI" header="Left-Raw-ERC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWERC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWBR35_NSLICES" header="Left-Raw-Br35_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWBR35_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWBR35" header="Left-Raw-Br35_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWBR35_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWBR35_HEMI" header="Left-Raw-Br35 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWBR35_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWBR36_NSLICES" header="Left-Raw-Br36_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWBR36_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWBR36" header="Left-Raw-Br36_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWBR36_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWBR36_HEMI" header="Left-Raw-Br36 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWBR36_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWPHC_NSLICES" header="Left-Raw-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWPHC" header="Left-Raw-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWPHC_HEMI" header="Left-Raw-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWCOLSUL_NSLICES" header="Left-Raw-ColSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWCOLSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWCOLSUL" header="Left-Raw-ColSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWCOLSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWCOLSUL_HEMI" header="Left-Raw-ColSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWCOLSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWOTSUL_NSLICES" header="Left-Raw-OTSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWOTSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWOTSUL" header="Left-Raw-OTSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWOTSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWOTSUL_HEMI" header="Left-Raw-OTSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWOTSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTRAWMENINGES_NSLICES" header="Left-Raw-Meninges_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMENINGES_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWMENINGES" header="Left-Raw-Meninges_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMENINGES_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTRAWMENINGES_HEMI" header="Left-Raw-Meninges HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTRAWMENINGES_HEMI"/>
+	</DisplayField>
+
+<!-- Right Hemisphere -->
+	<DisplayField id="_RIGHTRAWANTERIORHIPPOCAMPUS_NSLICES" header="Right-Raw-Anterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWANTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWANTERIORHIPPOCAMPUS" header="Right-Raw-Anterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWANTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWANTERIORHIPPOCAMPUS_HEMI" header="Right-Raw-Anterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWANTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWPOSTERIORHIPPOCAMPUS_NSLICES" header="Right-Raw-Posterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWPOSTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWPOSTERIORHIPPOCAMPUS" header="Right-Raw-Posterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWPOSTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWPOSTERIORHIPPOCAMPUS_HEMI" header="Right-Raw-Posterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWPOSTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWMISC_NSLICES" header="Right-Raw-Misc_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMISC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWMISC" header="Right-Raw-Misc_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMISC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWMISC_HEMI" header="Right-Raw-Misc HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMISC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWMENINGESPHC_NSLICES" header="Right-Raw-Meninges-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMENINGESPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWMENINGESPHC" header="Right-Raw-Meninges-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMENINGESPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWMENINGESPHC_HEMI" header="Right-Raw-Meninges-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMENINGESPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWERC_NSLICES" header="Right-Raw-ERC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWERC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWERC" header="Right-Raw-ERC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWERC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWERC_HEMI" header="Right-Raw-ERC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWERC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWBR35_NSLICES" header="Right-Raw-Br35_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWBR35_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWBR35" header="Right-Raw-Br35_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWBR35_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWBR35_HEMI" header="Right-Raw-Br35 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWBR35_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWBR36_NSLICES" header="Right-Raw-Br36_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWBR36_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWBR36" header="Right-Raw-Br36_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWBR36_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWBR36_HEMI" header="Right-Raw-Br36 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWBR36_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWPHC_NSLICES" header="Right-Raw-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWPHC" header="Right-Raw-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWPHC_HEMI" header="Right-Raw-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWCOLSUL_NSLICES" header="Right-Raw-ColSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWCOLSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWCOLSUL" header="Right-Raw-ColSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWCOLSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWCOLSUL_HEMI" header="Right-Raw-ColSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWCOLSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWOTSUL_NSLICES" header="Right-Raw-OTSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWOTSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWOTSUL" header="Right-Raw-OTSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWOTSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWOTSUL_HEMI" header="Right-Raw-OTSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWOTSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTRAWMENINGES_NSLICES" header="Right-Raw-Meninges_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMENINGES_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWMENINGES" header="Right-Raw-Meninges_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMENINGES_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTRAWMENINGES_HEMI" header="Right-Raw-Meninges HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTRAWMENINGES_HEMI"/>
+	</DisplayField>
+
+<!-- Beginning of volumetric heur variables -->
+<!-- Left Hemisphere -->
+	<DisplayField id="_LEFTHEURANTERIORHIPPOCAMPUS_NSLICES" header="Left-Heur-Anterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURANTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURANTERIORHIPPOCAMPUS" header="Left-Heur-Anterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURANTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURANTERIORHIPPOCAMPUS_HEMI" header="Left-Heur-Anterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURANTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURPOSTERIORHIPPOCAMPUS_NSLICES" header="Left-Heur-Posterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURPOSTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURPOSTERIORHIPPOCAMPUS" header="Left-Heur-Posterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURPOSTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURPOSTERIORHIPPOCAMPUS_HEMI" header="Left-Heur-Posterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURPOSTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURMISC_NSLICES" header="Left-Heur-Misc_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMISC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURMISC" header="Left-Heur-Misc_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMISC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURMISC_HEMI" header="Left-Heur-Misc HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMISC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURMENINGESPHC_NSLICES" header="Left-Heur-Meninges-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMENINGESPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURMENINGESPHC" header="Left-Heur-Meninges-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMENINGESPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURMENINGESPHC_HEMI" header="Left-Heur-Meninges-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMENINGESPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURERC_NSLICES" header="Left-Heur-ERC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURERC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURERC" header="Left-Heur-ERC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURERC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURERC_HEMI" header="Left-Heur-ERC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURERC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURBR35_NSLICES" header="Left-Heur-Br35_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURBR35_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURBR35" header="Left-Heur-Br35_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURBR35_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURBR35_HEMI" header="Left-Heur-Br35 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURBR35_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURBR36_NSLICES" header="Left-Heur-Br36_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURBR36_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURBR36" header="Left-Heur-Br36_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURBR36_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURBR36_HEMI" header="Left-Heur-Br36 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURBR36_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURPHC_NSLICES" header="Left-Heur-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURPHC" header="Left-Heur-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURPHC_HEMI" header="Left-Heur-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURCOLSUL_NSLICES" header="Left-Heur-ColSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURCOLSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURCOLSUL" header="Left-Heur-ColSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURCOLSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURCOLSUL_HEMI" header="Left-Heur-ColSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURCOLSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEUROTSUL_NSLICES" header="Left-Heur-OTSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEUROTSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEUROTSUL" header="Left-Heur-OTSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEUROTSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEUROTSUL_HEMI" header="Left-Heur-OTSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEUROTSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_LEFTHEURMENINGES_NSLICES" header="Left-Heur-Meninges_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMENINGES_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURMENINGES" header="Left-Heur-Meninges_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMENINGES_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_LEFTHEURMENINGES_HEMI" header="Left-Heur-Meninges HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_LEFTHEURMENINGES_HEMI"/>
+	</DisplayField>
+
+<!-- Right Hemisphere -->
+	<DisplayField id="_RIGHTHEURANTERIORHIPPOCAMPUS_NSLICES" header="Right-Heur-Anterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURANTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURANTERIORHIPPOCAMPUS" header="Right-Heur-Anterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURANTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURANTERIORHIPPOCAMPUS_HEMI" header="Right-Heur-Anterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURANTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURPOSTERIORHIPPOCAMPUS_NSLICES" header="Right-Heur-Posterior-hippocampus_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURPOSTERIORHIPPOCAMPUS_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURPOSTERIORHIPPOCAMPUS" header="Right-Heur-Posterior-hippocampus_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURPOSTERIORHIPPOCAMPUS_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURPOSTERIORHIPPOCAMPUS_HEMI" header="Right-Heur-Posterior-hippocampus HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURPOSTERIORHIPPOCAMPUS_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURMISC_NSLICES" header="Right-Heur-Misc_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMISC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURMISC" header="Right-Heur-Misc_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMISC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURMISC_HEMI" header="Right-Heur-Misc HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMISC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURMENINGESPHC_NSLICES" header="Right-Heur-Meninges-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMENINGESPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURMENINGESPHC" header="Right-Heur-Meninges-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMENINGESPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURMENINGESPHC_HEMI" header="Right-Heur-Meninges-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMENINGESPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURERC_NSLICES" header="Right-Heur-ERC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURERC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURERC" header="Right-Heur-ERC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURERC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURERC_HEMI" header="Right-Heur-ERC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURERC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURBR35_NSLICES" header="Right-Heur-Br35_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURBR35_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURBR35" header="Right-Heur-Br35_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURBR35_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURBR35_HEMI" header="Right-Heur-Br35 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURBR35_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURBR36_NSLICES" header="Right-Heur-Br36_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURBR36_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURBR36" header="Right-Heur-Br36_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURBR36_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURBR36_HEMI" header="Right-Heur-Br36 HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURBR36_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURPHC_NSLICES" header="Right-Heur-PHC_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURPHC_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURPHC" header="Right-Heur-PHC_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURPHC_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURPHC_HEMI" header="Right-Heur-PHC HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURPHC_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURCOLSUL_NSLICES" header="Right-Heur-ColSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURCOLSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURCOLSUL" header="Right-Heur-ColSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURCOLSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURCOLSUL_HEMI" header="Right-Heur-ColSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURCOLSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEUROTSUL_NSLICES" header="Right-Heur-OTSul_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEUROTSUL_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEUROTSUL" header="Right-Heur-OTSul_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEUROTSUL_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEUROTSUL_HEMI" header="Right-Heur-OTSul HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEUROTSUL_HEMI"/>
+	</DisplayField>
+
+	<DisplayField id="_RIGHTHEURMENINGES_NSLICES" header="Right-Heur-Meninges_nslices" sort-order="DESC" data-type="float" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMENINGES_NSLICES"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURMENINGES" header="Right-Heur-Meninges_volume" sort-order="DESC" data-type="float" visible="true" searchable="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMENINGES_VOLUME"/>
+	</DisplayField>
+	<DisplayField id="_RIGHTHEURMENINGES_HEMI" header="Right-Heur-Meninges HEMI" sort-order="DESC" data-type="string" visible="true">
+		<DisplayFieldElement name="COL1" viewName="ASHS_ASHSDATA_FULL_VALUES" viewColumn="_RIGHTHEURMENINGES_HEMI"/>
+	</DisplayField>
+
+
+	<DisplayVersion versionName="listing" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="RPT"/>
+		<DisplayFieldRef id="LABEL"/>
+		<DisplayFieldRef id="DATE"/>
+		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
+		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
+		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWMISC"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTRAWERC"/>
+		<DisplayFieldRef id="_LEFTRAWBR35"/>
+		<DisplayFieldRef id="_LEFTRAWBR36"/>
+		<DisplayFieldRef id="_LEFTRAWPHC"/>
+		<DisplayFieldRef id="_LEFTRAWCOLSUL"/>
+		<DisplayFieldRef id="_LEFTRAWOTSUL"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGES"/>
+		<DisplayFieldRef id="_RIGHTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWMISC"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWERC"/>
+		<DisplayFieldRef id="_RIGHTRAWBR35"/>
+		<DisplayFieldRef id="_RIGHTRAWBR36"/>
+		<DisplayFieldRef id="_RIGHTRAWPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWOTSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGES"/>
+		<DisplayFieldRef id="_LEFTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURMISC"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTHEURERC"/>
+		<DisplayFieldRef id="_LEFTHEURBR35"/>
+		<DisplayFieldRef id="_LEFTHEURBR36"/>
+		<DisplayFieldRef id="_LEFTHEURPHC"/>
+		<DisplayFieldRef id="_LEFTHEURCOLSUL"/>
+		<DisplayFieldRef id="_LEFTHEUROTSUL"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGES"/>
+		<DisplayFieldRef id="_RIGHTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURMISC"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURERC"/>
+		<DisplayFieldRef id="_RIGHTHEURBR35"/>
+		<DisplayFieldRef id="_RIGHTHEURBR36"/>
+		<DisplayFieldRef id="_RIGHTHEURPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTHEUROTSUL"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGES"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="listing_csv" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="LABEL"/>
+		<DisplayFieldRef id="DATE"/>
+		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
+		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
+		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWMISC"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTRAWERC"/>
+		<DisplayFieldRef id="_LEFTRAWBR35"/>
+		<DisplayFieldRef id="_LEFTRAWBR36"/>
+		<DisplayFieldRef id="_LEFTRAWPHC"/>
+		<DisplayFieldRef id="_LEFTRAWCOLSUL"/>
+		<DisplayFieldRef id="_LEFTRAWOTSUL"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGES"/>
+		<DisplayFieldRef id="_RIGHTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWMISC"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWERC"/>
+		<DisplayFieldRef id="_RIGHTRAWBR35"/>
+		<DisplayFieldRef id="_RIGHTRAWBR36"/>
+		<DisplayFieldRef id="_RIGHTRAWPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWOTSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGES"/>
+		<DisplayFieldRef id="_LEFTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURMISC"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTHEURERC"/>
+		<DisplayFieldRef id="_LEFTHEURBR35"/>
+		<DisplayFieldRef id="_LEFTHEURBR36"/>
+		<DisplayFieldRef id="_LEFTHEURPHC"/>
+		<DisplayFieldRef id="_LEFTHEURCOLSUL"/>
+		<DisplayFieldRef id="_LEFTHEUROTSUL"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGES"/>
+		<DisplayFieldRef id="_RIGHTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURMISC"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURERC"/>
+		<DisplayFieldRef id="_RIGHTHEURBR35"/>
+		<DisplayFieldRef id="_RIGHTHEURBR36"/>
+		<DisplayFieldRef id="_RIGHTHEURPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTHEUROTSUL"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGES"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="full" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="EXPT_ID"/>
+		<DisplayFieldRef id="DATE"/>
+		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
+		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
+		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWMISC"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTRAWERC"/>
+		<DisplayFieldRef id="_LEFTRAWBR35"/>
+		<DisplayFieldRef id="_LEFTRAWBR36"/>
+		<DisplayFieldRef id="_LEFTRAWPHC"/>
+		<DisplayFieldRef id="_LEFTRAWCOLSUL"/>
+		<DisplayFieldRef id="_LEFTRAWOTSUL"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGES"/>
+		<DisplayFieldRef id="_RIGHTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWMISC"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWERC"/>
+		<DisplayFieldRef id="_RIGHTRAWBR35"/>
+		<DisplayFieldRef id="_RIGHTRAWBR36"/>
+		<DisplayFieldRef id="_RIGHTRAWPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWOTSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGES"/>
+		<DisplayFieldRef id="_LEFTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURMISC"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTHEURERC"/>
+		<DisplayFieldRef id="_LEFTHEURBR35"/>
+		<DisplayFieldRef id="_LEFTHEURBR36"/>
+		<DisplayFieldRef id="_LEFTHEURPHC"/>
+		<DisplayFieldRef id="_LEFTHEURCOLSUL"/>
+		<DisplayFieldRef id="_LEFTHEUROTSUL"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGES"/>
+		<DisplayFieldRef id="_RIGHTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURMISC"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURERC"/>
+		<DisplayFieldRef id="_RIGHTHEURBR35"/>
+		<DisplayFieldRef id="_RIGHTHEURBR36"/>
+		<DisplayFieldRef id="_RIGHTHEURPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTHEUROTSUL"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGES"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="brief" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="EXPT_ID"/>
+		<DisplayFieldRef id="DATE"/>
+		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
+		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
+		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWMISC"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTRAWERC"/>
+		<DisplayFieldRef id="_LEFTRAWBR35"/>
+		<DisplayFieldRef id="_LEFTRAWBR36"/>
+		<DisplayFieldRef id="_LEFTRAWPHC"/>
+		<DisplayFieldRef id="_LEFTRAWCOLSUL"/>
+		<DisplayFieldRef id="_LEFTRAWOTSUL"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGES"/>
+		<DisplayFieldRef id="_RIGHTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWMISC"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWERC"/>
+		<DisplayFieldRef id="_RIGHTRAWBR35"/>
+		<DisplayFieldRef id="_RIGHTRAWBR36"/>
+		<DisplayFieldRef id="_RIGHTRAWPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWOTSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGES"/>
+		<DisplayFieldRef id="_LEFTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURMISC"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTHEURERC"/>
+		<DisplayFieldRef id="_LEFTHEURBR35"/>
+		<DisplayFieldRef id="_LEFTHEURBR36"/>
+		<DisplayFieldRef id="_LEFTHEURPHC"/>
+		<DisplayFieldRef id="_LEFTHEURCOLSUL"/>
+		<DisplayFieldRef id="_LEFTHEUROTSUL"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGES"/>
+		<DisplayFieldRef id="_RIGHTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURMISC"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURERC"/>
+		<DisplayFieldRef id="_RIGHTHEURBR35"/>
+		<DisplayFieldRef id="_RIGHTHEURBR36"/>
+		<DisplayFieldRef id="_RIGHTHEURPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTHEUROTSUL"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGES"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="detailed" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="EXPT_ID"/>
+		<DisplayFieldRef id="DATE"/>
+		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
+		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
+		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWMISC"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTRAWERC"/>
+		<DisplayFieldRef id="_LEFTRAWBR35"/>
+		<DisplayFieldRef id="_LEFTRAWBR36"/>
+		<DisplayFieldRef id="_LEFTRAWPHC"/>
+		<DisplayFieldRef id="_LEFTRAWCOLSUL"/>
+		<DisplayFieldRef id="_LEFTRAWOTSUL"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGES"/>
+		<DisplayFieldRef id="_RIGHTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWMISC"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWERC"/>
+		<DisplayFieldRef id="_RIGHTRAWBR35"/>
+		<DisplayFieldRef id="_RIGHTRAWBR36"/>
+		<DisplayFieldRef id="_RIGHTRAWPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWOTSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGES"/>
+		<DisplayFieldRef id="_LEFTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURMISC"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTHEURERC"/>
+		<DisplayFieldRef id="_LEFTHEURBR35"/>
+		<DisplayFieldRef id="_LEFTHEURBR36"/>
+		<DisplayFieldRef id="_LEFTHEURPHC"/>
+		<DisplayFieldRef id="_LEFTHEURCOLSUL"/>
+		<DisplayFieldRef id="_LEFTHEUROTSUL"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGES"/>
+		<DisplayFieldRef id="_RIGHTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURMISC"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURERC"/>
+		<DisplayFieldRef id="_RIGHTHEURBR35"/>
+		<DisplayFieldRef id="_RIGHTHEURBR36"/>
+		<DisplayFieldRef id="_RIGHTHEURPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTHEUROTSUL"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGES"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="project_bundle" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="ASHS_ASHSDATA_PROJECT_IDENTIFIER"/>
+		<DisplayFieldRef id="SESSION_ID"/>
+		<DisplayFieldRef id="SUB_PROJECT_IDENTIFIER" element_name="xnat:subjectData"/>
+		<DisplayFieldRef id="DATE"/>
+		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
+		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
+		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTRAWMISC"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTRAWERC"/>
+		<DisplayFieldRef id="_LEFTRAWBR35"/>
+		<DisplayFieldRef id="_LEFTRAWBR36"/>
+		<DisplayFieldRef id="_LEFTRAWPHC"/>
+		<DisplayFieldRef id="_LEFTRAWCOLSUL"/>
+		<DisplayFieldRef id="_LEFTRAWOTSUL"/>
+		<DisplayFieldRef id="_LEFTRAWMENINGES"/>
+		<DisplayFieldRef id="_RIGHTRAWANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTRAWMISC"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWERC"/>
+		<DisplayFieldRef id="_RIGHTRAWBR35"/>
+		<DisplayFieldRef id="_RIGHTRAWBR36"/>
+		<DisplayFieldRef id="_RIGHTRAWPHC"/>
+		<DisplayFieldRef id="_RIGHTRAWCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWOTSUL"/>
+		<DisplayFieldRef id="_RIGHTRAWMENINGES"/>
+		<DisplayFieldRef id="_LEFTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_LEFTHEURMISC"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_LEFTHEURERC"/>
+		<DisplayFieldRef id="_LEFTHEURBR35"/>
+		<DisplayFieldRef id="_LEFTHEURBR36"/>
+		<DisplayFieldRef id="_LEFTHEURPHC"/>
+		<DisplayFieldRef id="_LEFTHEURCOLSUL"/>
+		<DisplayFieldRef id="_LEFTHEUROTSUL"/>
+		<DisplayFieldRef id="_LEFTHEURMENINGES"/>
+		<DisplayFieldRef id="_RIGHTHEURANTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURPOSTERIORHIPPOCAMPUS"/>
+		<DisplayFieldRef id="_RIGHTHEURMISC"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGESPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURERC"/>
+		<DisplayFieldRef id="_RIGHTHEURBR35"/>
+		<DisplayFieldRef id="_RIGHTHEURBR36"/>
+		<DisplayFieldRef id="_RIGHTHEURPHC"/>
+		<DisplayFieldRef id="_RIGHTHEURCOLSUL"/>
+		<DisplayFieldRef id="_RIGHTHEUROTSUL"/>
+		<DisplayFieldRef id="_RIGHTHEURMENINGES"/>
+	</DisplayVersion>
+
+	<ViewLink alias="ASHS_ASHSDATA_FULL_VALUES">
+		<Mapping TableName="ASHS_ASHSDATA_FULL_VALUES">
+			<MappingColumn rootElement="ashs:ashsData" fieldElement="ashs:ashsData.ID" mapsTo="ID"/>
+		</Mapping>
+	</ViewLink>
+
+
+	<SQLView name="ASHS_ASHSDATA_FULL_VALUES" sql="SELECT ashs.id, _leftrawanteriorhippocampus.nslices AS _leftrawanteriorhippocampus_nslices, _leftrawanteriorhippocampus.volume AS _leftrawanteriorhippocampus_volume, _leftrawanteriorhippocampus.hemisphere AS _leftrawanteriorhippocampus_hemi, _leftrawposteriorhippocampus.nslices AS _leftrawposteriorhippocampus_nslices, _leftrawposteriorhippocampus.volume AS _leftrawposteriorhippocampus_volume, _leftrawposteriorhippocampus.hemisphere AS _leftrawposteriorhippocampus_hemi, _leftrawmisc.nslices AS _leftrawmisc_nslices, _leftrawmisc.volume AS _leftrawmisc_volume, _leftrawmisc.hemisphere AS _leftrawmisc_hemi, _leftrawmeningesphc.nslices AS _leftrawmeningesphc_nslices, _leftrawmeningesphc.volume AS _leftrawmeningesphc_volume, _leftrawmeningesphc.hemisphere AS _leftrawmeningesphc_hemi, _leftrawerc.nslices AS _leftrawerc_nslices, _leftrawerc.volume AS _leftrawerc_volume, _leftrawerc.hemisphere AS _leftrawerc_hemi, _leftrawbr35.nslices AS _leftrawbr35_nslices, _leftrawbr35.volume AS _leftrawbr35_volume, _leftrawbr35.hemisphere AS _leftrawbr35_hemi, _leftrawbr36.nslices AS _leftrawbr36_nslices, _leftrawbr36.volume AS _leftrawbr36_volume, _leftrawbr36.hemisphere AS _leftrawbr36_hemi, _leftrawphc.nslices AS _leftrawphc_nslices, _leftrawphc.volume AS _leftrawphc_volume, _leftrawphc.hemisphere AS _leftrawphc_hemi, _leftrawcolsul.nslices AS _leftrawcolsul_nslices, _leftrawcolsul.volume AS _leftrawcolsul_volume, _leftrawcolsul.hemisphere AS _leftrawcolsul_hemi, _leftrawotsul.nslices AS _leftrawotsul_nslices, _leftrawotsul.volume AS _leftrawotsul_volume, _leftrawotsul.hemisphere AS _leftrawotsul_hemi,_leftrawmeninges.nslices AS _leftrawmeninges_nslices, _leftrawmeninges.volume AS _leftrawmeninges_volume, _leftrawmeninges.hemisphere AS _leftrawmeninges_hemi, _rightrawanteriorhippocampus.nslices AS _rightrawanteriorhippocampus_nslices, _rightrawanteriorhippocampus.volume AS _rightrawanteriorhippocampus_volume, _rightrawanteriorhippocampus.hemisphere AS _rightrawanteriorhippocampus_hemi, _rightrawposteriorhippocampus.nslices AS _rightrawposteriorhippocampus_nslices, _rightrawposteriorhippocampus.volume AS _rightrawposteriorhippocampus_volume, _rightrawposteriorhippocampus.hemisphere AS _rightrawposteriorhippocampus_hemi, _rightrawmisc.nslices AS _rightrawmisc_nslices, _rightrawmisc.volume AS _rightrawmisc_volume, _rightrawmisc.hemisphere AS _rightrawmisc_hemi, _rightrawmeningesphc.nslices AS _rightrawmeningesphc_nslices, _rightrawmeningesphc.volume AS _rightrawmeningesphc_volume, _rightrawmeningesphc.hemisphere AS _rightrawmeningesphc_hemi, _rightrawerc.nslices AS _rightrawerc_nslices, _rightrawerc.volume AS _rightrawerc_volume, _rightrawerc.hemisphere AS _rightrawerc_hemi, _rightrawbr35.nslices AS _rightrawbr35_nslices, _rightrawbr35.volume AS _rightrawbr35_volume, _rightrawbr35.hemisphere AS _rightrawbr35_hemi, _rightrawbr36.nslices AS _rightrawbr36_nslices, _rightrawbr36.volume AS _rightrawbr36_volume, _rightrawbr36.hemisphere AS _rightrawbr36_hemi, _rightrawphc.nslices AS _rightrawphc_nslices, _rightrawphc.volume AS _rightrawphc_volume, _rightrawphc.hemisphere AS _rightrawphc_hemi, _rightrawcolsul.nslices AS _rightrawcolsul_nslices, _rightrawcolsul.volume AS _rightrawcolsul_volume, _rightrawcolsul.hemisphere AS _rightrawcolsul_hemi, _rightrawotsul.nslices AS _rightrawotsul_nslices, _rightrawotsul.volume AS _rightrawotsul_volume, _rightrawotsul.hemisphere AS _rightrawotsul_hemi,_rightrawmeninges.nslices AS _rightrawmeninges_nslices, _rightrawmeninges.volume AS _rightrawmeninges_volume, _rightrawmeninges.hemisphere AS _rightrawmeninges_hemi, _leftheuranteriorhippocampus.nslices AS _leftheuranteriorhippocampus_nslices, _leftheuranteriorhippocampus.volume AS _leftheuranteriorhippocampus_volume, _leftheuranteriorhippocampus.hemisphere AS _leftheuranteriorhippocampus_hemi, _leftheurposteriorhippocampus.nslices AS _leftheurposteriorhippocampus_nslices, _leftheurposteriorhippocampus.volume AS _leftheurposteriorhippocampus_volume, _leftheurposteriorhippocampus.hemisphere AS _leftheurposteriorhippocampus_hemi, _leftheurmisc.nslices AS _leftheurmisc_nslices, _leftheurmisc.volume AS _leftheurmisc_volume, _leftheurmisc.hemisphere AS _leftheurmisc_hemi, _leftheurmeningesphc.nslices AS _leftheurmeningesphc_nslices, _leftheurmeningesphc.volume AS _leftheurmeningesphc_volume, _leftheurmeningesphc.hemisphere AS _leftheurmeningesphc_hemi, _leftheurerc.nslices AS _leftheurerc_nslices, _leftheurerc.volume AS _leftheurerc_volume, _leftheurerc.hemisphere AS _leftheurerc_hemi, _leftheurbr35.nslices AS _leftheurbr35_nslices, _leftheurbr35.volume AS _leftheurbr35_volume, _leftheurbr35.hemisphere AS _leftheurbr35_hemi, _leftheurbr36.nslices AS _leftheurbr36_nslices, _leftheurbr36.volume AS _leftheurbr36_volume, _leftheurbr36.hemisphere AS _leftheurbr36_hemi, _leftheurphc.nslices AS _leftheurphc_nslices, _leftheurphc.volume AS _leftheurphc_volume, _leftheurphc.hemisphere AS _leftheurphc_hemi, _leftheurcolsul.nslices AS _leftheurcolsul_nslices, _leftheurcolsul.volume AS _leftheurcolsul_volume, _leftheurcolsul.hemisphere AS _leftheurcolsul_hemi, _leftheurotsul.nslices AS _leftheurotsul_nslices, _leftheurotsul.volume AS _leftheurotsul_volume, _leftheurotsul.hemisphere AS _leftheurotsul_hemi,_leftheurmeninges.nslices AS _leftheurmeninges_nslices, _leftheurmeninges.volume AS _leftheurmeninges_volume, _leftheurmeninges.hemisphere AS _leftheurmeninges_hemi, _rightheuranteriorhippocampus.nslices AS _rightheuranteriorhippocampus_nslices, _rightheuranteriorhippocampus.volume AS _rightheuranteriorhippocampus_volume, _rightheuranteriorhippocampus.hemisphere AS _rightheuranteriorhippocampus_hemi, _rightheurposteriorhippocampus.nslices AS _rightheurposteriorhippocampus_nslices, _rightheurposteriorhippocampus.volume AS _rightheurposteriorhippocampus_volume, _rightheurposteriorhippocampus.hemisphere AS _rightheurposteriorhippocampus_hemi, _rightheurmisc.nslices AS _rightheurmisc_nslices, _rightheurmisc.volume AS _rightheurmisc_volume, _rightheurmisc.hemisphere AS _rightheurmisc_hemi, _rightheurmeningesphc.nslices AS _rightheurmeningesphc_nslices, _rightheurmeningesphc.volume AS _rightheurmeningesphc_volume, _rightheurmeningesphc.hemisphere AS _rightheurmeningesphc_hemi, _rightheurerc.nslices AS _rightheurerc_nslices, _rightheurerc.volume AS _rightheurerc_volume, _rightheurerc.hemisphere AS _rightheurerc_hemi, _rightheurbr35.nslices AS _rightheurbr35_nslices, _rightheurbr35.volume AS _rightheurbr35_volume, _rightheurbr35.hemisphere AS _rightheurbr35_hemi, _rightheurbr36.nslices AS _rightheurbr36_nslices, _rightheurbr36.volume AS _rightheurbr36_volume, _rightheurbr36.hemisphere AS _rightheurbr36_hemi, _rightheurphc.nslices AS _rightheurphc_nslices, _rightheurphc.volume AS _rightheurphc_volume, _rightheurphc.hemisphere AS _rightheurphc_hemi, _rightheurcolsul.nslices AS _rightheurcolsul_nslices, _rightheurcolsul.volume AS _rightheurcolsul_volume, _rightheurcolsul.hemisphere AS _rightheurcolsul_hemi, _rightheurotsul.nslices AS _rightheurotsul_nslices, _rightheurotsul.volume AS _rightheurotsul_volume, _rightheurotsul.hemisphere AS _rightheurotsul_hemi,_rightheurmeninges.nslices AS _rightheurmeninges_nslices, _rightheurmeninges.volume AS _rightheurmeninges_volume, _rightheurmeninges.hemisphere AS _rightheurmeninges_hemi
+
+   FROM ashs_ashsData ashs
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Anterior-hippocampus'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawanteriorhippocampus ON ashs.id::text = _leftrawanteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Posterior-hippocampus'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawposteriorhippocampus ON ashs.id::text = _leftrawposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Misc'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawmisc ON ashs.id::text = _leftrawmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Meninges-PHC'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawmeningesphc ON ashs.id::text = _leftrawmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-ERC'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawerc ON ashs.id::text = _leftrawerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Br35'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawbr35 ON ashs.id::text = _leftrawbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Br36'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawbr36 ON ashs.id::text = _leftrawbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-PHC'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawphc ON ashs.id::text = _leftrawphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-ColSul'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawcolsul ON ashs.id::text = _leftrawcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-OTSul'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawotsul ON ashs.id::text = _leftrawotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Meninges'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawmeninges ON ashs.id::text = _leftrawmeninges.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Anterior-hippocampus'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawanteriorhippocampus ON ashs.id::text = _rightrawanteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Posterior-hippocampus'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawposteriorhippocampus ON ashs.id::text = _rightrawposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Misc'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawmisc ON ashs.id::text = _rightrawmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Meninges-PHC'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawmeningesphc ON ashs.id::text = _rightrawmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-ERC'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawerc ON ashs.id::text = _rightrawerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Br35'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawbr35 ON ashs.id::text = _rightrawbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Br36'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawbr36 ON ashs.id::text = _rightrawbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-PHC'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawphc ON ashs.id::text = _rightrawphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-ColSul'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawcolsul ON ashs.id::text = _rightrawcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-OTSul'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawotsul ON ashs.id::text = _rightrawotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_raw_region
+   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Meninges'::text
+   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawmeninges ON ashs.id::text = _rightrawmeninges.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Anterior-hippocampus'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheuranteriorhippocampus ON ashs.id::text = _leftheuranteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Posterior-hippocampus'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurposteriorhippocampus ON ashs.id::text = _leftheurposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Misc'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurmisc ON ashs.id::text = _leftheurmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Meninges-PHC'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurmeningesphc ON ashs.id::text = _leftheurmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-ERC'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurerc ON ashs.id::text = _leftheurerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Br35'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurbr35 ON ashs.id::text = _leftheurbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Br36'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurbr36 ON ashs.id::text = _leftheurbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-PHC'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurphc ON ashs.id::text = _leftheurphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-ColSul'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurcolsul ON ashs.id::text = _leftheurcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-OTSul'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurotsul ON ashs.id::text = _leftheurotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Meninges'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurmeninges ON ashs.id::text = _leftheurmeninges.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Anterior-hippocampus'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheuranteriorhippocampus ON ashs.id::text = _rightheuranteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Posterior-hippocampus'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurposteriorhippocampus ON ashs.id::text = _rightheurposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Misc'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurmisc ON ashs.id::text = _rightheurmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Meninges-PHC'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurmeningesphc ON ashs.id::text = _rightheurmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-ERC'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurerc ON ashs.id::text = _rightheurerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Br35'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurbr35 ON ashs.id::text = _rightheurbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Br36'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurbr36 ON ashs.id::text = _rightheurbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-PHC'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurphc ON ashs.id::text = _rightheurphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-ColSul'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurcolsul ON ashs.id::text = _rightheurcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-OTSul'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurotsul ON ashs.id::text = _rightheurotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
+   FROM ashsData_vol_heur_region
+   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Meninges'::text
+   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurmeninges ON ashs.id::text = _rightheurmeninges.id::text"
+
+   />
+</Displays>

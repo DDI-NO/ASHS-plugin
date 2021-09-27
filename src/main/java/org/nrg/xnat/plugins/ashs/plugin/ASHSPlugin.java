@@ -13,12 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.nrg.config.services.ConfigService;
 import org.nrg.framework.annotations.XnatDataModel;
 import org.nrg.framework.annotations.XnatPlugin;
-import org.nrg.xdat.bean.AshsAshsDataBean;
+import org.nrg.xdat.bean.AshsAshsdataBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-@XnatPlugin(value = "ASHS-Plugin", name = "XNAT ASHS Plugin",
-            dataModels = {@XnatDataModel(value = AshsAshsDataBean.SCHEMA_ELEMENT_NAME,
+@XnatPlugin(value = "ASHS-Plugin", name = "XNAT ASHS Plugin", description="Provides the functionality to store ASHS results as image assessors.",
+            dataModels = {@XnatDataModel(value = AshsAshsdataBean.SCHEMA_ELEMENT_NAME,
                                          singular = "ASHS",
                                          plural = "ASHSs",
                                          code = "ASHS")})
