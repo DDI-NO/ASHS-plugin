@@ -29,7 +29,7 @@ plugins {
 //       For example, if a group at Miskatonic University developed a plugin, the
 //       group might be "edu.miskatonic.imaging.xnat".
 group "no.ahus.ddi.xnat"
-version "1.0.0-BETA"
+version "0.0.0"
 description "A plugin to store Automatic Segmentation of Hippocampal Subfields (ASHS) data in XNAT 1.8"
 
 // TODO: This provides access to all of these repositories for dependency resolution.

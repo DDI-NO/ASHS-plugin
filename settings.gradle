@@ -21,4 +21,4 @@ pluginManagement {
 
 // TODO: Replace this with your project name. The project name should indicate
 //       the function of the plugin.
-rootProject.name = "ASHS plugin"
+rootProject.name = "ASHS-plugin"
