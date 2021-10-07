@@ -43,7 +43,7 @@
 			</Property>
 		</HTML-Link>
 	</DisplayField>
-	<DisplayField id="DATE" header="ASHS Date" visible="true" searchable="true">
+	<DisplayField id="DATE" header="Date" visible="true" searchable="true">
 		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData.date"/>
 	</DisplayField>
 	<DisplayField id="NOTE" header="ASHS Notes" visible="true" searchable="true">
@@ -113,12 +113,15 @@
 		<DisplayField id="ATLAS" header="atlas" visible="true" searchable="true">
 		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/atlas"/>
 	</DisplayField>
-	<!-- <DisplayField id="INCLUDED_T1" header="Included_T1" visible="true" searchable="true">
-		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/included_T1"/>
+	<DisplayField id="QC" header="QC" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/QC"/>
 	</DisplayField>
-	<DisplayField id="INCLUDED_T2" header="Included_T2" visible="true" searchable="true">
-		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/included_T2"/>
-	</DisplayField> -->
+	<DisplayField id="T1" header="Included_T1" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/T1"/>
+	</DisplayField>
+	<DisplayField id="T2" header="Included_T2" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/T2"/>
+	</DisplayField>
 	<DisplayField id="MEASURES_VOLUMETRIC_ICV" header="IntraCranialVol" visible="true" searchable="true">
 		<DisplayFieldElement name="Field1" schema-element="ashs:ashsData/ICV"/>
 	</DisplayField>
@@ -574,9 +577,10 @@
 		<DisplayFieldRef id="RPT"/>
 		<DisplayFieldRef id="LABEL"/>
 		<DisplayFieldRef id="DATE"/>
-		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
-		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="T1"/>
+		<DisplayFieldRef id="T2"/>
 		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="QC"/>
 		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
 		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
 		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
@@ -626,9 +630,10 @@
 	<DisplayVersion versionName="listing_csv" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
 		<DisplayFieldRef id="LABEL"/>
 		<DisplayFieldRef id="DATE"/>
-		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
-		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="T1"/>
+		<DisplayFieldRef id="T2"/>
 		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="QC"/>
 		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
 		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
 		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
@@ -678,9 +683,10 @@
 	<DisplayVersion versionName="full" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
 		<DisplayFieldRef id="EXPT_ID"/>
 		<DisplayFieldRef id="DATE"/>
-		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
-		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="T1"/>
+		<DisplayFieldRef id="T2"/>
 		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="QC"/>
 		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
 		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
 		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
@@ -730,9 +736,10 @@
 	<DisplayVersion versionName="brief" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
 		<DisplayFieldRef id="EXPT_ID"/>
 		<DisplayFieldRef id="DATE"/>
-		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
-		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="T1"/>
+		<DisplayFieldRef id="T2"/>
 		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="QC"/>
 		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
 		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
 		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
@@ -782,9 +789,10 @@
 	<DisplayVersion versionName="detailed" default-order-by="DATE" default-sort-order="DESC" brief-description="ASHS" dark-color="9999CC" light-color="CCCCFF">
 		<DisplayFieldRef id="EXPT_ID"/>
 		<DisplayFieldRef id="DATE"/>
-		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
-		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="T1"/>
+		<DisplayFieldRef id="T2"/>
 		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="QC"/>
 		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
 		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
 		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
@@ -836,9 +844,10 @@
 		<DisplayFieldRef id="SESSION_ID"/>
 		<DisplayFieldRef id="SUB_PROJECT_IDENTIFIER" element_name="xnat:subjectData"/>
 		<DisplayFieldRef id="DATE"/>
-		<!-- <DisplayFieldRef id="INCLUDED_T1"/>
-		<DisplayFieldRef id="INCLUDED_T2"/> -->
+		<DisplayFieldRef id="T1"/>
+		<DisplayFieldRef id="T2"/>
 		<DisplayFieldRef id="ATLAS"/>
+		<DisplayFieldRef id="QC"/>
 		<DisplayFieldRef id="MEASURES_VOLUMETRIC_ICV"/>
 		<DisplayFieldRef id="_LEFTRAWANTERIORHIPPOCAMPUS"/>
 		<DisplayFieldRef id="_LEFTRAWPOSTERIORHIPPOCAMPUS"/>
@@ -891,187 +900,193 @@
 			<MappingColumn rootElement="ashs:ashsData" fieldElement="ashs:ashsData.ID" mapsTo="ID"/>
 		</Mapping>
 	</ViewLink>
+	<ViewLink alias="ASHS_ASHSDATA_PROJECTS">
+		<Mapping TableName="ASHS_ASHSDATA_PROJECTS">
+			<MappingColumn rootElement="ashs:ashsData" fieldElement="ashs:ashsData.ID" mapsTo="id"/>
+		</Mapping>
+	</ViewLink>
 
+	<SQLView name="ASHS_ASHSDATA_PROJECTS" sql="SELECT id, '&lt;' || expt.project || '&gt;' || xs_a_concat(',&lt;' || shared.project || '&gt;') AS projects FROM xnat_experimentData expt LEFT JOIN xnat_experimentData_share shared ON expt.id=shared.sharing_share_xnat_experimentda_id LEFT JOIN xdat_meta_element xme ON expt.extension = xme.xdat_meta_element_id WHERE element_name='ashs:ashsData' GROUP BY expt.id,expt.project"/>
 
 	<SQLView name="ASHS_ASHSDATA_FULL_VALUES" sql="SELECT ashs.id, _leftrawanteriorhippocampus.nslices AS _leftrawanteriorhippocampus_nslices, _leftrawanteriorhippocampus.volume AS _leftrawanteriorhippocampus_volume, _leftrawanteriorhippocampus.hemisphere AS _leftrawanteriorhippocampus_hemi, _leftrawposteriorhippocampus.nslices AS _leftrawposteriorhippocampus_nslices, _leftrawposteriorhippocampus.volume AS _leftrawposteriorhippocampus_volume, _leftrawposteriorhippocampus.hemisphere AS _leftrawposteriorhippocampus_hemi, _leftrawmisc.nslices AS _leftrawmisc_nslices, _leftrawmisc.volume AS _leftrawmisc_volume, _leftrawmisc.hemisphere AS _leftrawmisc_hemi, _leftrawmeningesphc.nslices AS _leftrawmeningesphc_nslices, _leftrawmeningesphc.volume AS _leftrawmeningesphc_volume, _leftrawmeningesphc.hemisphere AS _leftrawmeningesphc_hemi, _leftrawerc.nslices AS _leftrawerc_nslices, _leftrawerc.volume AS _leftrawerc_volume, _leftrawerc.hemisphere AS _leftrawerc_hemi, _leftrawbr35.nslices AS _leftrawbr35_nslices, _leftrawbr35.volume AS _leftrawbr35_volume, _leftrawbr35.hemisphere AS _leftrawbr35_hemi, _leftrawbr36.nslices AS _leftrawbr36_nslices, _leftrawbr36.volume AS _leftrawbr36_volume, _leftrawbr36.hemisphere AS _leftrawbr36_hemi, _leftrawphc.nslices AS _leftrawphc_nslices, _leftrawphc.volume AS _leftrawphc_volume, _leftrawphc.hemisphere AS _leftrawphc_hemi, _leftrawcolsul.nslices AS _leftrawcolsul_nslices, _leftrawcolsul.volume AS _leftrawcolsul_volume, _leftrawcolsul.hemisphere AS _leftrawcolsul_hemi, _leftrawotsul.nslices AS _leftrawotsul_nslices, _leftrawotsul.volume AS _leftrawotsul_volume, _leftrawotsul.hemisphere AS _leftrawotsul_hemi,_leftrawmeninges.nslices AS _leftrawmeninges_nslices, _leftrawmeninges.volume AS _leftrawmeninges_volume, _leftrawmeninges.hemisphere AS _leftrawmeninges_hemi, _rightrawanteriorhippocampus.nslices AS _rightrawanteriorhippocampus_nslices, _rightrawanteriorhippocampus.volume AS _rightrawanteriorhippocampus_volume, _rightrawanteriorhippocampus.hemisphere AS _rightrawanteriorhippocampus_hemi, _rightrawposteriorhippocampus.nslices AS _rightrawposteriorhippocampus_nslices, _rightrawposteriorhippocampus.volume AS _rightrawposteriorhippocampus_volume, _rightrawposteriorhippocampus.hemisphere AS _rightrawposteriorhippocampus_hemi, _rightrawmisc.nslices AS _rightrawmisc_nslices, _rightrawmisc.volume AS _rightrawmisc_volume, _rightrawmisc.hemisphere AS _rightrawmisc_hemi, _rightrawmeningesphc.nslices AS _rightrawmeningesphc_nslices, _rightrawmeningesphc.volume AS _rightrawmeningesphc_volume, _rightrawmeningesphc.hemisphere AS _rightrawmeningesphc_hemi, _rightrawerc.nslices AS _rightrawerc_nslices, _rightrawerc.volume AS _rightrawerc_volume, _rightrawerc.hemisphere AS _rightrawerc_hemi, _rightrawbr35.nslices AS _rightrawbr35_nslices, _rightrawbr35.volume AS _rightrawbr35_volume, _rightrawbr35.hemisphere AS _rightrawbr35_hemi, _rightrawbr36.nslices AS _rightrawbr36_nslices, _rightrawbr36.volume AS _rightrawbr36_volume, _rightrawbr36.hemisphere AS _rightrawbr36_hemi, _rightrawphc.nslices AS _rightrawphc_nslices, _rightrawphc.volume AS _rightrawphc_volume, _rightrawphc.hemisphere AS _rightrawphc_hemi, _rightrawcolsul.nslices AS _rightrawcolsul_nslices, _rightrawcolsul.volume AS _rightrawcolsul_volume, _rightrawcolsul.hemisphere AS _rightrawcolsul_hemi, _rightrawotsul.nslices AS _rightrawotsul_nslices, _rightrawotsul.volume AS _rightrawotsul_volume, _rightrawotsul.hemisphere AS _rightrawotsul_hemi,_rightrawmeninges.nslices AS _rightrawmeninges_nslices, _rightrawmeninges.volume AS _rightrawmeninges_volume, _rightrawmeninges.hemisphere AS _rightrawmeninges_hemi, _leftheuranteriorhippocampus.nslices AS _leftheuranteriorhippocampus_nslices, _leftheuranteriorhippocampus.volume AS _leftheuranteriorhippocampus_volume, _leftheuranteriorhippocampus.hemisphere AS _leftheuranteriorhippocampus_hemi, _leftheurposteriorhippocampus.nslices AS _leftheurposteriorhippocampus_nslices, _leftheurposteriorhippocampus.volume AS _leftheurposteriorhippocampus_volume, _leftheurposteriorhippocampus.hemisphere AS _leftheurposteriorhippocampus_hemi, _leftheurmisc.nslices AS _leftheurmisc_nslices, _leftheurmisc.volume AS _leftheurmisc_volume, _leftheurmisc.hemisphere AS _leftheurmisc_hemi, _leftheurmeningesphc.nslices AS _leftheurmeningesphc_nslices, _leftheurmeningesphc.volume AS _leftheurmeningesphc_volume, _leftheurmeningesphc.hemisphere AS _leftheurmeningesphc_hemi, _leftheurerc.nslices AS _leftheurerc_nslices, _leftheurerc.volume AS _leftheurerc_volume, _leftheurerc.hemisphere AS _leftheurerc_hemi, _leftheurbr35.nslices AS _leftheurbr35_nslices, _leftheurbr35.volume AS _leftheurbr35_volume, _leftheurbr35.hemisphere AS _leftheurbr35_hemi, _leftheurbr36.nslices AS _leftheurbr36_nslices, _leftheurbr36.volume AS _leftheurbr36_volume, _leftheurbr36.hemisphere AS _leftheurbr36_hemi, _leftheurphc.nslices AS _leftheurphc_nslices, _leftheurphc.volume AS _leftheurphc_volume, _leftheurphc.hemisphere AS _leftheurphc_hemi, _leftheurcolsul.nslices AS _leftheurcolsul_nslices, _leftheurcolsul.volume AS _leftheurcolsul_volume, _leftheurcolsul.hemisphere AS _leftheurcolsul_hemi, _leftheurotsul.nslices AS _leftheurotsul_nslices, _leftheurotsul.volume AS _leftheurotsul_volume, _leftheurotsul.hemisphere AS _leftheurotsul_hemi,_leftheurmeninges.nslices AS _leftheurmeninges_nslices, _leftheurmeninges.volume AS _leftheurmeninges_volume, _leftheurmeninges.hemisphere AS _leftheurmeninges_hemi, _rightheuranteriorhippocampus.nslices AS _rightheuranteriorhippocampus_nslices, _rightheuranteriorhippocampus.volume AS _rightheuranteriorhippocampus_volume, _rightheuranteriorhippocampus.hemisphere AS _rightheuranteriorhippocampus_hemi, _rightheurposteriorhippocampus.nslices AS _rightheurposteriorhippocampus_nslices, _rightheurposteriorhippocampus.volume AS _rightheurposteriorhippocampus_volume, _rightheurposteriorhippocampus.hemisphere AS _rightheurposteriorhippocampus_hemi, _rightheurmisc.nslices AS _rightheurmisc_nslices, _rightheurmisc.volume AS _rightheurmisc_volume, _rightheurmisc.hemisphere AS _rightheurmisc_hemi, _rightheurmeningesphc.nslices AS _rightheurmeningesphc_nslices, _rightheurmeningesphc.volume AS _rightheurmeningesphc_volume, _rightheurmeningesphc.hemisphere AS _rightheurmeningesphc_hemi, _rightheurerc.nslices AS _rightheurerc_nslices, _rightheurerc.volume AS _rightheurerc_volume, _rightheurerc.hemisphere AS _rightheurerc_hemi, _rightheurbr35.nslices AS _rightheurbr35_nslices, _rightheurbr35.volume AS _rightheurbr35_volume, _rightheurbr35.hemisphere AS _rightheurbr35_hemi, _rightheurbr36.nslices AS _rightheurbr36_nslices, _rightheurbr36.volume AS _rightheurbr36_volume, _rightheurbr36.hemisphere AS _rightheurbr36_hemi, _rightheurphc.nslices AS _rightheurphc_nslices, _rightheurphc.volume AS _rightheurphc_volume, _rightheurphc.hemisphere AS _rightheurphc_hemi, _rightheurcolsul.nslices AS _rightheurcolsul_nslices, _rightheurcolsul.volume AS _rightheurcolsul_volume, _rightheurcolsul.hemisphere AS _rightheurcolsul_hemi, _rightheurotsul.nslices AS _rightheurotsul_nslices, _rightheurotsul.volume AS _rightheurotsul_volume, _rightheurotsul.hemisphere AS _rightheurotsul_hemi,_rightheurmeninges.nslices AS _rightheurmeninges_nslices, _rightheurmeninges.volume AS _rightheurmeninges_volume, _rightheurmeninges.hemisphere AS _rightheurmeninges_hemi
 
    FROM ashs_ashsData ashs
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Anterior-hippocampus'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawanteriorhippocampus ON ashs.id::text = _leftrawanteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Posterior-hippocampus'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawposteriorhippocampus ON ashs.id::text = _leftrawposteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Misc'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawmisc ON ashs.id::text = _leftrawmisc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Meninges-PHC'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawmeningesphc ON ashs.id::text = _leftrawmeningesphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-ERC'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawerc ON ashs.id::text = _leftrawerc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Br35'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawbr35 ON ashs.id::text = _leftrawbr35.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Br36'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawbr36 ON ashs.id::text = _leftrawbr36.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-PHC'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawphc ON ashs.id::text = _leftrawphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-ColSul'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawcolsul ON ashs.id::text = _leftrawcolsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-OTSul'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawotsul ON ashs.id::text = _leftrawotsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Left-Raw-Meninges'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _leftrawmeninges ON ashs.id::text = _leftrawmeninges.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Anterior-hippocampus'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawanteriorhippocampus ON ashs.id::text = _rightrawanteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Posterior-hippocampus'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawposteriorhippocampus ON ashs.id::text = _rightrawposteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Misc'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawmisc ON ashs.id::text = _rightrawmisc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Meninges-PHC'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawmeningesphc ON ashs.id::text = _rightrawmeningesphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-ERC'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawerc ON ashs.id::text = _rightrawerc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Br35'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawbr35 ON ashs.id::text = _rightrawbr35.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Br36'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawbr36 ON ashs.id::text = _rightrawbr36.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-PHC'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawphc ON ashs.id::text = _rightrawphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-ColSul'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawcolsul ON ashs.id::text = _rightrawcolsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-OTSul'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawotsul ON ashs.id::text = _rightrawotsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) ashsData_vol_raw_region.nslices, ashsData_vol_raw_region.volume, ashsData_vol_raw_region.hemisphere, ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_raw_region
-   WHERE ashsData_vol_raw_region.name::text = 'Right-Raw-Meninges'::text
-   ORDER BY ashsData_vol_raw_region.ashsData_vol_raw_region_ashs_ashsData_id) _rightrawmeninges ON ashs.id::text = _rightrawmeninges.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Anterior-hippocampus'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheuranteriorhippocampus ON ashs.id::text = _leftheuranteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Posterior-hippocampus'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurposteriorhippocampus ON ashs.id::text = _leftheurposteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Misc'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurmisc ON ashs.id::text = _leftheurmisc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Meninges-PHC'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurmeningesphc ON ashs.id::text = _leftheurmeningesphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-ERC'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurerc ON ashs.id::text = _leftheurerc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Br35'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurbr35 ON ashs.id::text = _leftheurbr35.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Br36'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurbr36 ON ashs.id::text = _leftheurbr36.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-PHC'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurphc ON ashs.id::text = _leftheurphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-ColSul'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurcolsul ON ashs.id::text = _leftheurcolsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-OTSul'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurotsul ON ashs.id::text = _leftheurotsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Left-Heur-Meninges'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _leftheurmeninges ON ashs.id::text = _leftheurmeninges.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Anterior-hippocampus'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheuranteriorhippocampus ON ashs.id::text = _rightheuranteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Posterior-hippocampus'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurposteriorhippocampus ON ashs.id::text = _rightheurposteriorhippocampus.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Misc'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurmisc ON ashs.id::text = _rightheurmisc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Meninges-PHC'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurmeningesphc ON ashs.id::text = _rightheurmeningesphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-ERC'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurerc ON ashs.id::text = _rightheurerc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Br35'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurbr35 ON ashs.id::text = _rightheurbr35.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Br36'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurbr36 ON ashs.id::text = _rightheurbr36.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-PHC'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurphc ON ashs.id::text = _rightheurphc.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-ColSul'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurcolsul ON ashs.id::text = _rightheurcolsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-OTSul'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurotsul ON ashs.id::text = _rightheurotsul.id::text
-   LEFT JOIN ( SELECT DISTINCT ON (ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) ashsData_vol_heur_region.nslices, ashsData_vol_heur_region.volume, ashsData_vol_heur_region.hemisphere, ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id AS id
-   FROM ashsData_vol_heur_region
-   WHERE ashsData_vol_heur_region.name::text = 'Right-Heur-Meninges'::text
-   ORDER BY ashsData_vol_heur_region.ashsData_vol_heur_region_ashs_ashsData_id) _rightheurmeninges ON ashs.id::text = _rightheurmeninges.id::text"
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_Anterior_hippocampus'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawanteriorhippocampus ON ashs.id::text = _leftrawanteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_Posterior_hippocampus'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawposteriorhippocampus ON ashs.id::text = _leftrawposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_Misc'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawmisc ON ashs.id::text = _leftrawmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_Meninges_PHC'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawmeningesphc ON ashs.id::text = _leftrawmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_ERC'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawerc ON ashs.id::text = _leftrawerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_Br35'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawbr35 ON ashs.id::text = _leftrawbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_Br36'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawbr36 ON ashs.id::text = _leftrawbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_PHC'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawphc ON ashs.id::text = _leftrawphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_ColSul'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawcolsul ON ashs.id::text = _leftrawcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_OTSul'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawotsul ON ashs.id::text = _leftrawotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Left_Meninges'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _leftrawmeninges ON ashs.id::text = _leftrawmeninges.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_Anterior_hippocampus'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawanteriorhippocampus ON ashs.id::text = _rightrawanteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_Posterior_hippocampus'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawposteriorhippocampus ON ashs.id::text = _rightrawposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_Misc'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawmisc ON ashs.id::text = _rightrawmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_Meninges_PHC'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawmeningesphc ON ashs.id::text = _rightrawmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_ERC'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawerc ON ashs.id::text = _rightrawerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_Br35'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawbr35 ON ashs.id::text = _rightrawbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_Br36'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawbr36 ON ashs.id::text = _rightrawbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_PHC'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawphc ON ashs.id::text = _rightrawphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_ColSul'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawcolsul ON ashs.id::text = _rightrawcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_OTSul'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawotsul ON ashs.id::text = _rightrawotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) ashs_ashsData_raw_region.nslices, ashs_ashsData_raw_region.volume, ashs_ashsData_raw_region.hemisphere, ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id AS id
+   FROM ashs_ashsData_raw_region
+   WHERE ashs_ashsData_raw_region.name::text = 'Right_Meninges'::text
+   ORDER BY ashs_ashsData_raw_region.ashsdata_raw_region_ashs_ashsDa_id) _rightrawmeninges ON ashs.id::text = _rightrawmeninges.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_Anterior_hippocampus'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheuranteriorhippocampus ON ashs.id::text = _leftheuranteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_Posterior_hippocampus'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurposteriorhippocampus ON ashs.id::text = _leftheurposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_Misc'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurmisc ON ashs.id::text = _leftheurmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_Meninges_PHC'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurmeningesphc ON ashs.id::text = _leftheurmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_ERC'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurerc ON ashs.id::text = _leftheurerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_Br35'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurbr35 ON ashs.id::text = _leftheurbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_Br36'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurbr36 ON ashs.id::text = _leftheurbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_PHC'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurphc ON ashs.id::text = _leftheurphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_ColSul'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurcolsul ON ashs.id::text = _leftheurcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_OTSul'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurotsul ON ashs.id::text = _leftheurotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Left_Meninges'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _leftheurmeninges ON ashs.id::text = _leftheurmeninges.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_Anterior_hippocampus'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheuranteriorhippocampus ON ashs.id::text = _rightheuranteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_Posterior_hippocampus'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurposteriorhippocampus ON ashs.id::text = _rightheurposteriorhippocampus.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_Misc'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurmisc ON ashs.id::text = _rightheurmisc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_Meninges_PHC'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurmeningesphc ON ashs.id::text = _rightheurmeningesphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_ERC'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurerc ON ashs.id::text = _rightheurerc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_Br35'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurbr35 ON ashs.id::text = _rightheurbr35.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_Br36'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurbr36 ON ashs.id::text = _rightheurbr36.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_PHC'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurphc ON ashs.id::text = _rightheurphc.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_ColSul'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurcolsul ON ashs.id::text = _rightheurcolsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_OTSul'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurotsul ON ashs.id::text = _rightheurotsul.id::text
+   LEFT JOIN ( SELECT DISTINCT ON (ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) ashs_ashsData_heur_region.nslices, ashs_ashsData_heur_region.volume, ashs_ashsData_heur_region.hemisphere, ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id AS id
+   FROM ashs_ashsData_heur_region
+   WHERE ashs_ashsData_heur_region.name::text = 'Right_Meninges'::text
+   ORDER BY ashs_ashsData_heur_region.ashsdata_heur_region_ashs_ashsd_id) _rightheurmeninges ON ashs.id::text = _rightheurmeninges.id::text"
 
    />
 </Displays>

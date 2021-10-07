@@ -8,6 +8,9 @@
 				<xs:sequence>
 					<xs:element name="ashs_version" type="xs:string"/>
 					<xs:element name="atlas" type="xs:string"/>
+					<xs:element name="T1" type="xs:string" minOccurs="0"/>
+					<xs:element name="T2" type="xs:string" minOccurs="0"/>
+					<xs:element name="QC" type="xs:string" minOccurs="0"/>
 
 					<xs:element name="ICV" type="xs:float" minOccurs="0"/>
 					<xs:element name="measures">
@@ -19,11 +22,11 @@
 											<xs:element name="regions" minOccurs="0">
 												<xs:complexType>
 													<xs:sequence minOccurs="0">
-														<xs:element name="region" minOccurs="0" maxOccurs="unbounded">
+														<xs:element name="raw_region" minOccurs="0" maxOccurs="unbounded">
 															<xs:annotation>
 																<xs:appinfo>
 																	<xdat:element>
-																		<xdat:sqlElement name="ashsData_vol_raw_region"/>
+																		<xdat:sqlElement name="ashsData_raw_region"/>
 																	</xdat:element>
 																	<xdat:field>
 																		<xdat:relation uniqueComposite="name" relationType="single"/>
@@ -32,7 +35,7 @@
 															</xs:annotation>
 															<xs:complexType>
 																<xs:sequence minOccurs="0">
-																	<xs:element name="NSlices" type="xs:float" minOccurs="0"/>
+																	<xs:element name="NSlices" type="xs:integer" minOccurs="0"/>
 																	<xs:element name="Volume" type="xs:float" minOccurs="0"/>
 																</xs:sequence>
 																<xs:attribute name="name" type="xs:string" use="required">
@@ -64,11 +67,11 @@
 											<xs:element name="regions" minOccurs="0">
 												<xs:complexType>
 													<xs:sequence minOccurs="0">
-														<xs:element name="region" minOccurs="0" maxOccurs="unbounded">
+														<xs:element name="heur_region" minOccurs="0" maxOccurs="unbounded">
 															<xs:annotation>
 																<xs:appinfo>
 																	<xdat:element>
-																		<xdat:sqlElement name="ashsData_vol_heur_region"/>
+																		<xdat:sqlElement name="ashsData_heur_region"/>
 																	</xdat:element>
 																	<xdat:field>
 																		<xdat:relation uniqueComposite="name" relationType="single"/>
@@ -77,7 +80,7 @@
 															</xs:annotation>
 															<xs:complexType>
 																<xs:sequence minOccurs="0">
-																	<xs:element name="NSlices" type="xs:float" minOccurs="0"/>
+																	<xs:element name="NSlices" type="xs:integer" minOccurs="0"/>
 																	<xs:element name="Volume" type="xs:float" minOccurs="0"/>
 																</xs:sequence>
 																<xs:attribute name="name" type="xs:string" use="required">

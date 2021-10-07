@@ -122,6 +122,9 @@ $page.setVlinkColor($ui.vlink)
                             <TR><TD>Project</TD><TD>$!om.project</TD></TR>
                             <TR><TD>ASHS version</TD><TD>$!item.getStringProperty("ashs:ashsData/ashs_version")</TD></TR>
                             <TR><TD>ASHS atlas</TD><TD>$!item.getStringProperty("ashs:ashsData/atlas")</TD></TR>
+                            <TR><TD>QC status</TD><TD>$!item.getStringProperty("ashs:ashsData/QC")</TD></TR>
+                            <TR><TD>Included T1</TD><TD>$!item.getStringProperty("ashs:ashsData/T1")</TD></TR>
+                            <TR><TD>Included T2</TD><TD>$!item.getStringProperty("ashs:ashsData/T2")</TD></TR>
                         </table>
                     </div>
                     <div id="tab2">
@@ -139,7 +142,15 @@ $page.setVlinkColor($ui.vlink)
 
 <h2>ASHS Analysis</h2>
 
+<div id="ICV" style="margin-bottom: 20px;">
+  <table class="xnat-table">
+    <tr><TH>Region Name</TH><TH>Volume (mm<sup>3</sup>)</tr>
+      <tr>
+          <TD>ICV</TD><TD>$!turbineUtils.formatNumber($!item.getDoubleProperty("ashs:ashsData/ICV"),0)</TD>
+      </tr>
 
+  </table>
+</div>
 
 <div id="analysisTabs" class="yui-navset">
     <ul class="yui-nav" style="">
@@ -147,16 +158,12 @@ $page.setVlinkColor($ui.vlink)
         <li><a href="#analysis2"><em>Volume heur</em></a></li>
     </ul>
 
-    <div class="" id="ICV">
-      <table>
-        <TD>ICV</TD><TD>$!turbineUtils.formatNumber($!item.getDoubleProperty("ashs:ashsData/measures/icv"),0)</TD>
-      </table>
-    </div>
+
 
     #macro (volumeTab $tabID $volumeString)
       <div id="$tabID">
           <!-- BEGIN $volumeString MEASURES -->
-          #set($ashs_region_NUM_ROWS=$item.getChildItems("ashs:ashsData/measures/$volumeString/regions/region").size() - 1)
+          #set($ashs_region_NUM_ROWS=$item.getChildItems("ashs:ashsData/measures/volumetric_$volumeString/regions/${volumeString}_region").size() - 1)
           #if($ashs_region_NUM_ROWS>=0)
               <table class="xnat-table">
 
@@ -165,10 +172,10 @@ $page.setVlinkColor($ui.vlink)
                   #foreach($ashs_region_COUNTER in [0..$ashs_region_NUM_ROWS])
                       <!-- BEGIN ashs_ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER] -->
                       <tr>
-                          <TD>$!item.getStringProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/name")</TD>
-                          <TD>$!item.getStringProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/NSlices")</TD>
-                          <TD>$!item.getStringProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/hemisphere")</TD>
-                          <TD>$!turbineUtils.formatNumber($!item.getDoubleProperty("ashs:ashsData/measures/$volumeString/regions/region[$ashs_region_COUNTER]/Volume"),0)</TD>
+                          <TD>$!item.getStringProperty("ashs:ashsData/measures/volumetric_$volumeString/regions/${volumeString}_region[$ashs_region_COUNTER]/name")</TD>
+                          <TD>$!item.getProperty("ashs:ashsData/measures/volumetric_$volumeString/regions/${volumeString}_region[$ashs_region_COUNTER]/NSlices")</TD>
+                          <TD>$!item.getStringProperty("ashs:ashsData/measures/volumetric_$volumeString/regions/${volumeString}_region[$ashs_region_COUNTER]/hemisphere")</TD>
+                          <TD>$!turbineUtils.formatNumber($!item.getDoubleProperty("ashs:ashsData/measures/volumetric_$volumeString/regions/${volumeString}_region[$ashs_region_COUNTER]/Volume"),0)</TD>
                       </tr>
 
                       <!-- END ashs_ashsData/measures/volumetric/regions/region[$ashs_region_COUNTER] -->
@@ -180,8 +187,8 @@ $page.setVlinkColor($ui.vlink)
     #end
 
     <div class="yui-content">
-        #volumeTab("analysis1" "volumetric_raw")
-        #volumeTab("analysis2" "volumetric_heur")
+        #volumeTab("analysis1" "raw")
+        #volumeTab("analysis2" "heur")
     <!-- END YUI CONTENT -->
     </div>
 <!-- END YUI NAVSET -->
